@@ -55,7 +55,12 @@ const SpeakerDemographic = ({
   );
 };
 
-const Speaker = ({speaker}) => {
+const Speaker = ({ speaker }) => {
+  const id = speaker.id;
+  const first = speaker.first;
+  const last = speaker.last;
+  const sessions = speaker.sessions;
+
   return (
     <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4">
       <div className="card card-height p-4 mt-4">
@@ -67,16 +72,20 @@ const Speaker = ({speaker}) => {
   );
 };
 
+const SpeakersList = ({ speakers }) => {
+  return (
+    <div className="row">
+      {speakers.map((speaker) => {
+        return <Speaker key={speaker.id} speaker={speaker} />;
+      })}
+    </div>
+  );
+};
+
 const IndexPage = () => {
   return (
     <div className="container speakers-list">
-      <div className="row">
-        {data.map((speaker) => {
-          return (
-            <Speaker key={speaker.id} speaker={speaker}/>
-          );
-        })}
-      </div>
+      <SpeakersList speakers={data} />
     </div>
   );
 };
