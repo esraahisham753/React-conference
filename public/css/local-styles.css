@@ -487,10 +487,10 @@ input:checked + .switch:before {
   color: #7a7a7a;
   line-height: 22px;
   padding: 0;
-  /* min-height: 70px;
-      max-height: 70px; */
+  min-height: 70px;
+  max-height: 70px;
   margin: 0;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 .social {
@@ -1150,7 +1150,7 @@ input:checked + .switch:before {
 }
 
 .card-height {
-  height: 575px;
+  height: 675px;
 }
 
 .blue-btn {
@@ -1167,7 +1167,7 @@ input:checked + .switch:before {
 }
 
 .contain-fit {
-  object-fit: contain;
+  height: 300px;
 }
 
 .w-200 {
