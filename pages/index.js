@@ -1,12 +1,7 @@
-import { data } from "../SpeakerData";
-import SpeakersList from "../src/components/speakerslist";
+import Speakers from "../src/components/Speakers";
 
 const IndexPage = () => {
-  return (
-    <div className="container speakers-list">
-      <SpeakersList speakers={data} />
-    </div>
-  );
+  return <Speakers />;
 };
 
 export default IndexPage;

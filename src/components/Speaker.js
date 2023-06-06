@@ -78,14 +78,4 @@ const Speaker = ({ speaker }) => {
   );
 };
 
-const SpeakersList = ({ speakers }) => {
-  return (
-    <div className="row">
-      {speakers.map((speaker) => {
-        return <Speaker key={speaker.id} speaker={speaker} />;
-      })}
-    </div>
-  );
-};
-
-export default SpeakersList;
+export default Speaker;
