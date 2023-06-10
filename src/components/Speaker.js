@@ -29,6 +29,21 @@ const SpeakerImage = ({ id, first, last }) => {
   );
 };
 
+const SpeakerFavorite = ({ favorite, onToggleFavorite }) => {
+  return (
+    <div className="action padB1">
+      <span onClick={onToggleFavorite}>
+        <i
+          className={
+            favorite === true ? "fa fa-star orange" : "fa fa-star-o orange"
+          }
+        />{" "}
+        Favorite{" "}
+      </span>
+    </div>
+  );
+};
+
 const SpeakerDemographic = ({
   first,
   last,
@@ -36,6 +51,7 @@ const SpeakerDemographic = ({
   company,
   twitterHandle,
   favorite,
+  onToggleFavorite,
 }) => {
   return (
     <div className="speaker-info">
@@ -44,6 +60,10 @@ const SpeakerDemographic = ({
           {first} {last}
         </h3>
       </div>
+      <SpeakerFavorite
+        favorite={favorite}
+        onToggleFavorite={onToggleFavorite}
+      />
       <div>
         <p className="card-description">{bio}</p>
         <div className="social d-flex flex-row mt-4 mb-2">
@@ -61,7 +81,7 @@ const SpeakerDemographic = ({
   );
 };
 
-const Speaker = ({ speaker }) => {
+const Speaker = ({ speaker, showSessions, onToggleFavorite }) => {
   const id = speaker.id;
   const first = speaker.first;
   const last = speaker.last;
@@ -71,8 +91,8 @@ const Speaker = ({ speaker }) => {
     <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4">
       <div className="card card-height p-4 mt-4">
         <SpeakerImage id={id} first={first} last={last} />
-        <SpeakerDemographic {...speaker} />
-        <SessionsList sessions={sessions} />
+        <SpeakerDemographic {...speaker} onToggleFavorite={onToggleFavorite} />
+        {showSessions == true ? <SessionsList sessions={sessions} /> : null}
       </div>
     </div>
   );
