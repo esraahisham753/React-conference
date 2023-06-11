@@ -22,10 +22,11 @@ function useRequestDelay(delaysec = 100, initialData = []) {
       try {
         await delay(delaysec);
         setRequestStatus(REQUEST_STATUS.SUCCESS);
-        setSpeakersData(data);
+        setData(data);
       } catch (e) {
         setRequestStatus(REQUEST_STATUS.FAILURE);
-        setError(e);
+        console.log(e);
+        setError("error");
       }
     }
 
