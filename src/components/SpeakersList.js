@@ -1,7 +1,7 @@
 import Speaker from "./Speaker";
 import ReactPlaceHolder from "react-placeholder";
 import { data } from "../../SpeakerData";
-import useRequestDelay, { REQUEST_STATUS } from "../hooks/useSpeakersRequest";
+import useRequestDelay, { REQUEST_STATUS } from "../hooks/useRequestDelay";
 
 const SpeakersList = ({ showSessions }) => {
   const {
@@ -14,7 +14,7 @@ const SpeakersList = ({ showSessions }) => {
   if (requestStatus === REQUEST_STATUS.FAILURE) {
     return (
       <div className="text-danger">
-        ERROR: <b>Loading Speakers Data failed {error}</b>
+        ERROR: Loading Speakers Data failed {error}
       </div>
     );
   }
