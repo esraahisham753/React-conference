@@ -3,13 +3,11 @@ import SpeakersToolbar from "./SpeakersToolbar";
 
 import { useState } from "react";
 
-const Speakers = ({theme, setTheme }) => {
+const Speakers = () => {
   const [showSessions, setShowSessions] = useState(true);
   return (
     <>
       <SpeakersToolbar
-        theme={theme}
-        setTheme={setTheme}
         showSessions={showSessions}
         setShowSessions={setShowSessions}
       />
