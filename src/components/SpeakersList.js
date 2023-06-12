@@ -13,7 +13,7 @@ const SpeakersList = () => {
     data: speakersData,
   } = useRequestDelay(2000, data);
 
-  const { showSessions } = useContext(SpeakerFilterContext);
+  const { searchQuery, eventYear } = useContext(SpeakerFilterContext);
 
   if (requestStatus === REQUEST_STATUS.FAILURE) {
     return (
@@ -36,20 +36,27 @@ const SpeakersList = () => {
         ready={requestStatus === REQUEST_STATUS.SUCCESS}
       >
         <div className="row">
-          {speakersData.map((speaker) => {
-            return (
-              <Speaker
-                key={speaker.id}
-                speaker={speaker}
-                onToggleFavorite={(doneCallback) => {
-                  updateRecord(
-                    { ...speaker, favorite: !speaker.favorite },
-                    doneCallback
-                  );
-                }}
-              />
-            );
-          })}
+          {speakersData
+            .filter((speaker) => {
+              return (
+                speaker.first.toLowerCase().includes(searchQuery) ||
+                speaker.last.toLowerCase().includes(searchQuery)
+              );
+            })
+            .filter((speaker) => {
+              return speaker.sessions.find((session) => {
+                return session.eventYear === eventYear;
+              });
+            })
+            .map((speaker) => {
+              return (
+                <Speaker
+                  key={speaker.id}
+                  speaker={speaker}
+                  updateRecord={updateRecord}
+                />
+              );
+            })}
         </div>
       </ReactPlaceHolder>
     </div>
