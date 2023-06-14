@@ -1,5 +1,7 @@
 import { useState, useContext } from "react";
 import { SpeakerFilterContext } from "../contexts/SpeakerFilterContext";
+import { SpeakerContext, SpeakerProvider } from "../contexts/SpeakerContext";
+import SpeakerDelete from "./SpeakerDelete";
 
 const Session = ({ title, room }) => {
   return (
@@ -9,12 +11,13 @@ const Session = ({ title, room }) => {
   );
 };
 
-const SessionsList = ({ sessions }) => {
+const SessionsList = () => {
   const { eventYear } = useContext(SpeakerFilterContext);
+  const { speaker } = useContext(SpeakerContext);
 
   return (
     <div className="sessionBox card h-250">
-      {sessions
+      {speaker.sessions
         .filter((session) => {
           return session.eventYear === eventYear;
         })
@@ -29,7 +32,10 @@ const SessionsList = ({ sessions }) => {
   );
 };
 
-const SpeakerImage = ({ id, first, last }) => {
+const SpeakerImage = () => {
+  const {
+    speaker: { id, first, last },
+  } = useContext(SpeakerContext);
   return (
     <div className="speaker-image d-flex flex-row justify-content-center align-items-center h-300">
       <img
@@ -42,8 +48,9 @@ const SpeakerImage = ({ id, first, last }) => {
   );
 };
 
-const SpeakerFavorite = ({ favorite, onToggleFavorite }) => {
+const SpeakerFavorite = () => {
   const [inTransition, setInTransition] = useState(false);
+  const { speaker, updateRecord } = useContext(SpeakerContext);
 
   const doneCallback = () => {
     setInTransition(false);
@@ -57,12 +64,20 @@ const SpeakerFavorite = ({ favorite, onToggleFavorite }) => {
       <span
         onClick={() => {
           setInTransition(true);
-          return onToggleFavorite(doneCallback);
+          updateRecord(
+            {
+              ...Speaker,
+              favorite: !Speaker.favorite,
+            },
+            doneCallback
+          );
         }}
       >
         <i
           className={
-            favorite === true ? "fa fa-star orange" : "fa fa-star-o orange"
+            speaker.favorite === true
+              ? "fa fa-star orange"
+              : "fa fa-star-o orange"
           }
         />{" "}
         Favorite{" "}
@@ -74,15 +89,10 @@ const SpeakerFavorite = ({ favorite, onToggleFavorite }) => {
   );
 };
 
-const SpeakerDemographic = ({
-  first,
-  last,
-  bio,
-  company,
-  twitterHandle,
-  favorite,
-  onToggleFavorite,
-}) => {
+const SpeakerDemographic = () => {
+  const { speaker } = useContext(SpeakerContext);
+  const { first, last, bio, company, twitterHandle } = speaker;
+
   return (
     <div className="speaker-info">
       <div className="d-flex justify-content-between mb-3">
@@ -90,10 +100,7 @@ const SpeakerDemographic = ({
           {first} {last}
         </h3>
       </div>
-      <SpeakerFavorite
-        favorite={favorite}
-        onToggleFavorite={onToggleFavorite}
-      />
+      <SpeakerFavorite />
       <div>
         <p className="card-description">{bio}</p>
         <div className="social d-flex flex-row mt-4 mb-2">
@@ -111,21 +118,25 @@ const SpeakerDemographic = ({
   );
 };
 
-const Speaker = ({ speaker, onToggleFavorite }) => {
-  const id = speaker.id;
-  const first = speaker.first;
-  const last = speaker.last;
-  const sessions = speaker.sessions;
+const Speaker = ({ speaker, updateRecord, insertRecord, deleteRecord }) => {
   const { showSessions } = useContext(SpeakerFilterContext);
 
   return (
-    <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-      <div className="card card-height p-4 mt-4">
-        <SpeakerImage id={id} first={first} last={last} />
-        <SpeakerDemographic {...speaker} onToggleFavorite={onToggleFavorite} />
-        {showSessions == true ? <SessionsList sessions={sessions} /> : null}
+    <SpeakerProvider
+      speaker={speaker}
+      updateRecord={updateRecord}
+      insertRecord={insertRecord}
+      deleteRecord={deleteRecord}
+    >
+      <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+        <div className="card card-height p-4 mt-4">
+          <SpeakerImage />
+          <SpeakerDemographic />
+          {showSessions == true ? <SessionsList /> : null}
+        </div>
+        <SpeakerDelete />
       </div>
-    </div>
+    </SpeakerProvider>
   );
 };
 
