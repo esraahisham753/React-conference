@@ -54,9 +54,9 @@ const SpeakerFavorite = () => {
 
   const doneCallback = () => {
     setInTransition(false);
-    console.log(
+    /*console.log(
       `In SpeakerFavorite.doneCallback function ${new Date().getMilliseconds()}`
-    );
+    );*/
   };
 
   return (
@@ -64,10 +64,12 @@ const SpeakerFavorite = () => {
       <span
         onClick={() => {
           setInTransition(true);
+          const fav = speaker.favorite ? "true" : "false";
+          console.log(`The old fav = ${fav}`);
           updateRecord(
             {
-              ...Speaker,
-              favorite: !Speaker.favorite,
+              ...speaker,
+              favorite: !speaker.favorite,
             },
             doneCallback
           );
@@ -106,11 +108,11 @@ const SpeakerDemographic = () => {
         <div className="social d-flex flex-row mt-4 mb-2">
           <div className="company">
             <h5>Company</h5>
-            <h6>{company}</h6>
+            <h6>{company ? company : "Not assigned"}</h6>
           </div>
           <div className="twitter">
             <h5>Twitter</h5>
-            <h6>{twitterHandle}</h6>
+            <h6>{twitterHandle ? twitterHandle : "Not assigned"}</h6>
           </div>
         </div>
       </div>

@@ -34,6 +34,7 @@ function useRequestDelay(delaysec = 100, initialData = []) {
   }, []);
 
   const updateRecord = (recordUpdated, doneCallback) => {
+    console.log(`The new fav = ${recordUpdated.favorite}`);
     const originalRecord = [...data];
     const newRecords = data.map((rec) => {
       return rec.id === recordUpdated.id ? recordUpdated : rec;
