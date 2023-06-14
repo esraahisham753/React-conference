@@ -4,12 +4,15 @@ import { data } from "../../SpeakerData";
 import useRequestDelay, { REQUEST_STATUS } from "../hooks/useRequestDelay";
 import { useContext } from "react";
 import { SpeakerFilterContext } from "../contexts/SpeakerFilterContext";
+import SpeakerAdd from './SpeakerAdd';
 
 const SpeakersList = () => {
   const {
     requestStatus,
     error,
     updateRecord,
+    insertRecord,
+    deleteRecord,
     data: speakersData,
   } = useRequestDelay(2000, data);
 
@@ -35,6 +38,7 @@ const SpeakersList = () => {
         className="speakerslist-placeholder"
         ready={requestStatus === REQUEST_STATUS.SUCCESS}
       >
+        <SpeakerAdd eventYear={eventYear} insertRecord={insertRecord} />
         <div className="row">
           {speakersData
             .filter((speaker) => {
@@ -54,6 +58,8 @@ const SpeakersList = () => {
                   key={speaker.id}
                   speaker={speaker}
                   updateRecord={updateRecord}
+                  insertRecord={insertRecord}
+                  deleteRecord={deleteRecord}
                 />
               );
             })}
