@@ -5,7 +5,7 @@ const { promisify } = require("util");
 const readFile = promisify(fs.readFile);
 
 const delay = (ms) =>
-  new promise((resolve) => {
+  new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
 
@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   try {
     const readFileData = await readFile(jsonFile);
     await delay(1000);
-    const speakers = json.parse(readFileData).speakers;
+    const speakers = JSON.parse(readFileData).speakers;
 
     if (speakers) {
       res.setHeader("Content-Type", "application/json");

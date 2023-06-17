@@ -11,7 +11,7 @@ const SpeakerAdd = ({ eventYear, insertRecord }) => {
             id: "99999",
             first: firstLastArray[0],
             last: firstLastArray[1],
-            bio: "bi not entered yet",
+            bio: "bio not entered yet",
             sessions: [
               {
                 id: "88888",
