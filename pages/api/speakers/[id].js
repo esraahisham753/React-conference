@@ -1,12 +1,12 @@
 import path from "path";
 import fs from "fs";
 
-const promisify = require("util");
+const { promisify } = require("util");
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
 const delay = (ms) =>
-  new promise((resolve) => {
+  new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
 
@@ -36,14 +36,17 @@ export default async function handler(req, res) {
     try {
       const readFileData = await readFile(jsonFile);
       await delay(1000);
-      const speakers = json.parse(readFileData).speakers;
+      const speakers = JSON.parse(readFileData).speakers;
+      //console.log(speakers[0]["favorite"]);
 
       if (!speakers) {
         res.status(404).send("Error: Request failed with status 404");
       } else {
+        console.log(recordFromBody["favorite"]);
         const newSpeakersArray = speakers.map((rec) => {
-          return rec.id === id ? recordFromBody : rec;
+          return rec.id == id ? recordFromBody : rec;
         });
+        //console.log(newSpeakersArray[0]["favorite"]);
         writeFile(
           jsonFile,
           JSON.stringify({ speakers: newSpeakersArray }, null, 2)
@@ -64,7 +67,7 @@ export default async function handler(req, res) {
     try {
       const readFileData = await readFile(jsonFile);
       await delay(1000);
-      const speakers = json.parse(readFileData).speakers;
+      const speakers = JSON.parse(readFileData).speakers;
 
       if (!speakers) {
         res.status(404).send("Error: Request failed with status 404");
@@ -99,14 +102,16 @@ export default async function handler(req, res) {
     try {
       const readFileData = await readFile(jsonFile);
       await delay(1000);
-      const speakers = json.parse(readFileData).speakers;
+      const speakers = JSON.parse(readFileData).speakers;
 
       if (!speakers) {
         res.status(404).send("Error: Request failed with status 404");
       } else {
+        //console.log(speakers[0]);
         const newSpeakersArray = speakers.filter((rec) => {
-          return rec.id != id ? recordFromBody : rec;
+          return rec.id != id;
         });
+        //console.log(newSpeakersArray[0]);
         writeFile(
           jsonFile,
           JSON.stringify({ speakers: newSpeakersArray }, null, 2)

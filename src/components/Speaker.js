@@ -135,7 +135,7 @@ const SpeakerDemographic = () => {
 
 const Speaker = ({ speaker, updateRecord, insertRecord, deleteRecord }) => {
   const { showSessions } = useContext(SpeakerFilterContext);
-
+  console.log(`Speaker: ${speaker.id} ${speaker.first} ${speaker.last}`);
   return (
     <SpeakerProvider
       speaker={speaker}
