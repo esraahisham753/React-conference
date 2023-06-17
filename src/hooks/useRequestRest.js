@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 export const REQUEST_STATUS = {
   LOADING: "loading",
@@ -6,10 +7,11 @@ export const REQUEST_STATUS = {
   FAILURE: "failure",
 };
 
-function useRequestDelay(delaysec = 100, initialData = []) {
-  const [data, setData] = useState(initialData);
+function useRequestRest() {
+  const [data, setData] = useState([]);
   const [requestStatus, setRequestStatus] = useState(REQUEST_STATUS.LOADING);
   const [error, setError] = useState("");
+  const restUrl = "api/speakers";
 
   const delay = (ms) => {
     return new Promise((resolve) => {
@@ -20,9 +22,9 @@ function useRequestDelay(delaysec = 100, initialData = []) {
   useEffect(() => {
     async function delayFunc() {
       try {
-        await delay(delaysec);
+        const result = await axios.get(restUrl);
         setRequestStatus(REQUEST_STATUS.SUCCESS);
-        setData(data);
+        setData(result.data);
       } catch (e) {
         setRequestStatus(REQUEST_STATUS.FAILURE);
         console.log(e);
@@ -43,7 +45,7 @@ function useRequestDelay(delaysec = 100, initialData = []) {
     async function delayFunction() {
       try {
         setData(newRecords);
-        await delay(delaysec);
+        await axios.put(`${restUrl}/${recordUpdated.id}`, recordUpdated);
         if (doneCallback) {
           doneCallback();
         }
@@ -66,7 +68,7 @@ function useRequestDelay(delaysec = 100, initialData = []) {
     async function delayFunction() {
       try {
         setData(newRecords);
-        await delay(delaysec);
+        await axios.post(`${restUrl}/99999`, record);
         if (doneCallback) {
           doneCallback();
         }
@@ -91,7 +93,7 @@ function useRequestDelay(delaysec = 100, initialData = []) {
     async function delayFunction() {
       try {
         setData(newRecords);
-        await delay(delaysec);
+        await axios.delete(`${restUrl}/${record.id}`);
         if (doneCallback) {
           doneCallback();
         }
@@ -117,4 +119,4 @@ function useRequestDelay(delaysec = 100, initialData = []) {
   };
 }
 
-export default useRequestDelay;
+export default useRequestRest;
