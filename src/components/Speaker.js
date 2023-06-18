@@ -1,7 +1,8 @@
-import { useState, useContext } from "react";
+import { useState, useContext, memo } from "react";
 import { SpeakerFilterContext } from "../contexts/SpeakerFilterContext";
 import { SpeakerContext, SpeakerProvider } from "../contexts/SpeakerContext";
 import SpeakerDelete from "./SpeakerDelete";
+import ErrorBoundary from "./ErrorBoundary";
 
 const Session = ({ title, room }) => {
   return (
@@ -117,7 +118,7 @@ const SpeakerDemographic = () => {
       </div>
       <SpeakerFavorite />
       <div>
-        <p className="card-description">{bio}</p>
+        <p className="card-description">{bio.substr(0, 70)}</p>
         <div className="social d-flex flex-row mt-4 mb-2">
           <div className="company">
             <h5>Company</h5>
@@ -133,9 +134,28 @@ const SpeakerDemographic = () => {
   );
 };
 
-const Speaker = ({ speaker, updateRecord, insertRecord, deleteRecord }) => {
+const SpeakerMethod = ({
+  speaker,
+  updateRecord,
+  insertRecord,
+  deleteRecord,
+  showErrorCard,
+}) => {
   const { showSessions } = useContext(SpeakerFilterContext);
-  console.log(`Speaker: ${speaker.id} ${speaker.first} ${speaker.last}`);
+  //console.log(`Speaker: ${speaker.id} ${speaker.first} ${speaker.last}`);
+  if (showErrorCard) {
+    return (
+      <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+        <div className="card card-height p-4 mt-4">
+          <img src="/images/speaker-99999.jpg" />
+          <div>
+            <b>Error showing speaker</b>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <SpeakerProvider
       speaker={speaker}
@@ -152,6 +172,22 @@ const Speaker = ({ speaker, updateRecord, insertRecord, deleteRecord }) => {
         <SpeakerDelete />
       </div>
     </SpeakerProvider>
+  );
+};
+
+const areEqualSpeakers = (prevProps, nextProps) => {
+  return prevProps.speaker.favorite === nextProps.speaker.favorite;
+};
+
+const SpeakerWithoutErrorBoundary = memo(SpeakerMethod, areEqualSpeakers);
+
+const Speaker = (props) => {
+  return (
+    <ErrorBoundary
+      errorUI={<SpeakerWithoutErrorBoundary props={...props} showErrorCard={true}/>}
+    >
+      <SpeakerWithoutErrorBoundary {...props}></SpeakerWithoutErrorBoundary>
+    </ErrorBoundary>
   );
 };
 
