@@ -1,10 +1,7 @@
-# Node.js template
+#React Conference
 
-This is a Node.js project.
+This is a React project.
 
-Add your [configuration](https://codesandbox.io/docs/projects/learn/setting-up/tasks) to optimize it for [CodeSandbox](https://codesandbox.io/p/dashboard).
+An App for managing Conference's speakers and session and also API for speakers' CRUD operations using Next.js
 
-## Resources
-
-- [CodeSandbox — Docs](https://codesandbox.io/docs/projects)
-- [CodeSandbox — Discord](https://discord.gg/Ggarp3pX5H)
+Note: I know login is not secure, it was only for practicing purposes: Combining React Context API with HOC(Higher order components)
